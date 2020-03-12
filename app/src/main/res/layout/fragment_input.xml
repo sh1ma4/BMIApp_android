@@ -19,11 +19,12 @@
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
+            android:layout_height="wrap_content"
+            android:minHeight="?attr/actionBarSize"
             android:theme="@style/ToolBarStyle">
 
             <TextView
-                android:id="@+id/toolbar_title_device_list"
+                android:id="@+id/toolbar_title_input"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -43,7 +44,7 @@
     </LinearLayout>
 
     <TextView
-        android:id="@+id/input_description"
+        android:id="@+id/description"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
@@ -55,7 +56,7 @@
         android:textStyle="bold" />
 
     <LinearLayout
-        android:id="@+id/input_linear_height"
+        android:id="@+id/linear_height"
         android:layout_width="240dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
@@ -63,7 +64,7 @@
         android:orientation="horizontal">
 
         <TextView
-            android:id="@+id/input_height"
+            android:id="@+id/height"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="20dp"
@@ -75,7 +76,7 @@
             android:gravity="center_horizontal" />
 
         <EditText
-            android:id="@+id/height"
+            android:id="@+id/edit_height"
             android:layout_width="140dp"
             android:layout_height="50dp"
             android:background="@drawable/shape_text_field"
@@ -83,7 +84,7 @@
             android:autofillHints="" />
 
         <TextView
-            android:id="@+id/input_cm"
+            android:id="@+id/cm"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
@@ -96,7 +97,7 @@
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/input_linear_weight"
+        android:id="@+id/linear_weight"
         android:layout_width="240dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
@@ -104,7 +105,7 @@
         android:orientation="horizontal">
 
         <TextView
-            android:id="@+id/input_weight"
+            android:id="@+id/weight"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="20dp"
@@ -116,14 +117,14 @@
             android:gravity="center_horizontal" />
 
         <EditText
-            android:id="@+id/weight"
+            android:id="@+id/edit_weight"
             android:layout_width="140dp"
             android:layout_height="50dp"
             android:background="@drawable/shape_text_field"
             android:textSize="22sp" />
 
         <TextView
-            android:id="@+id/input_kg"
+            android:id="@+id/kg"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
@@ -136,12 +137,12 @@
     </LinearLayout>
 
     <Button
-        android:id="@+id/input_calc_button"
+        android:id="@+id/calc_bmi_button"
         android:layout_width="350dp"
         android:layout_height="80dp"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="20dp"
-        android:background="@drawable/selector_button"
+        android:background="@drawable/selector_color_button"
         android:text="@string/input_calc_button"
         android:textSize="22sp" />
 
@@ -153,7 +154,7 @@
         android:background="@color/color_gray" />
 
     <LinearLayout
-        android:id="@+id/input_linear_result"
+        android:id="@+id/linear_result"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
@@ -174,7 +175,7 @@
             android:gravity="center_horizontal" />
 
         <TextView
-            android:id="@+id/result_bmi"
+            android:id="@+id/text_bmi"
             android:layout_width="60dp"
             android:layout_height="wrap_content"
             android:textSize="24sp"
@@ -194,7 +195,7 @@
     </LinearLayout>
 
     <EditText
-        android:id="@+id/result_message_free"
+        android:id="@+id/edit_memo"
         android:layout_width="match_parent"
         android:layout_height="80dp"
         android:layout_marginLeft="20dp"
@@ -203,10 +204,11 @@
         android:background="@drawable/shape_text_field"
         android:hint="@string/placeholder_message"
         android:textColorHint="@color/color_gray"
+        android:gravity="top|left"
         android:textSize="16sp" />
 
     <LinearLayout
-        android:id="@+id/input_linear_button"
+        android:id="@+id/linear_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="20dp"
@@ -223,7 +225,7 @@
             android:layout_marginEnd="30dp"
             android:layout_marginRight="30dp"
             android:layout_weight="1"
-            android:background="@drawable/selector_button"
+            android:background="@drawable/selector_default_button"
             android:text="@string/delete"
             android:textSize="16sp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -235,7 +237,7 @@
             android:layout_width="0dp"
             android:layout_height="40dp"
             android:layout_weight="1"
-            android:background="@drawable/selector_button"
+            android:background="@drawable/selector_color_button"
             android:text="@string/save"
             android:textSize="16sp"
             app:layout_constraintEnd_toEndOf="parent"

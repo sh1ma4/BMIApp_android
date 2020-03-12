@@ -3,10 +3,8 @@ package com.example.bmiapp
 import android.os.Bundle
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.app.AppCompatActivity
-import androidx.navigation.findNavController
-import androidx.navigation.ui.AppBarConfiguration
-import androidx.navigation.ui.setupActionBarWithNavController
-import androidx.navigation.ui.setupWithNavController
+import com.example.bmiapp.ui.history.HistoryFragment
+import com.example.bmiapp.ui.input.InputFragment
 
 class MainActivity : AppCompatActivity() {
 
@@ -14,11 +12,24 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         val navView: BottomNavigationView = findViewById(R.id.nav_view)
-
-        val navController = findNavController(R.id.nav_host_fragment)
-        val appBarConfiguration = AppBarConfiguration(setOf(
-                R.id.navigation_input, R.id.navigation_history))
-        setupActionBarWithNavController(navController, appBarConfiguration)
-        navView.setupWithNavController(navController)
+        navView.setOnNavigationItemSelectedListener {
+            when (it.itemId) {
+                R.id.navigation_input -> {
+                    title = R.string.title_input.toString()
+                    supportFragmentManager.beginTransaction()
+                                          .replace(R.id.nav_host_fragment, InputFragment())
+                                          .commit()
+                    return@setOnNavigationItemSelectedListener true
+                }
+                R.id.navigation_history -> {
+                    title = R.string.title_history.toString()
+                    supportFragmentManager.beginTransaction()
+                                          .replace(R.id.nav_host_fragment, HistoryFragment())
+                                          .commit()
+                    return@setOnNavigationItemSelectedListener true
+                }
+            }
+            false
+        }
     }
 }
