@@ -114,11 +114,13 @@ class InputFragment : Fragment() {
     }
 
     private fun isCurrentDayData(): Boolean {
-//        for (date in this.dataList) {
-//            if (date.month = || date.day == SimpleDateFormat("yyyyMMdd").format(Date())) {
-//                return false
-//            }
-//        }
+        for (date in this.dataList) {
+            val strDate = SimpleDateFormat("yyyy-MM-dd").format(Date())
+            val dateArray = strDate.split("-".toRegex())
+            if (date.month == dateArray[1] || date.day == dateArray[2]) {
+                return false
+            }
+        }
         return true
     }
 
