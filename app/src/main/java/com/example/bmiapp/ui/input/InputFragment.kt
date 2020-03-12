@@ -13,6 +13,7 @@ import androidx.fragment.app.Fragment
 import com.example.bmiapp.Model.UserDataModel
 import com.example.bmiapp.R
 import kotlinx.android.synthetic.main.fragment_input.*
+import kotlinx.android.synthetic.main.list_item.*
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -69,21 +70,25 @@ class InputFragment : Fragment() {
         edit_memo.setText("")
     }
 
-    private fun saveUserData() {
-//        val userDataMap: MutableList<UserDataModel> = mutableMapOf()
-//        val strCurrentDate = SimpleDateFormat("yyyyMMdd").format(Date())
-//        userDataMap[R.string.date.toString()] = strCurrentDate
-//        userDataMap[R.string.input_height.toString()] = edit_height.text.toString()
-//        userDataMap[R.string.input_weight.toString()] = edit_weight.text.toString()
-//        userDataMap[R.string.bmi.toString()] = text_bmi.text.toString()
-//        userDataMap[R.string.memo.toString()] = edit_memo.text.toString()
-//
-//        dataList.add(sharedPreferenceData?.all.toString())
-//
-//        val editor = sharedPreferenceData?.edit()
-//        editor?.putString(strCurrentDate, userDataMap.toString())
-//        editor?.commit()
+    private fun storeDateToArray(): List<String> {
+        val strDate = SimpleDateFormat("yyyy-MM-dd").format(Date())
+       return strDate.split("-".toRegex())
+    }
 
+    private fun saveUserData() {
+        val dateArray = storeDateToArray()
+        var userDataModel = UserDataModel()
+        userDataModel.month = dateArray[1]
+        userDataModel.day = dateArray[2]
+        userDataModel.height = edit_height.text.toString()
+        userDataModel.weight = edit_weight.text.toString()
+        userDataModel.memo = edit_memo.text.toString()
+
+        if (isCurrentDayData()) {
+            // 更新
+        } else {
+            // データ登録
+        }
     }
 
     private fun createAlert(dialogMessage: String): Dialog {
@@ -114,9 +119,8 @@ class InputFragment : Fragment() {
     }
 
     private fun isCurrentDayData(): Boolean {
+        val dateArray = storeDateToArray()
         for (date in this.dataList) {
-            val strDate = SimpleDateFormat("yyyy-MM-dd").format(Date())
-            val dateArray = strDate.split("-".toRegex())
             if (date.month == dateArray[1] || date.day == dateArray[2]) {
                 return false
             }

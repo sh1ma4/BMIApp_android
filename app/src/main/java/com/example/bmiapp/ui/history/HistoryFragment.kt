@@ -41,6 +41,7 @@ class HistoryFragment : Fragment() {
     }
 
     private fun getSaveData(): MutableList<UserDataModel> {
+        // TODO: sharedPRefはキャストできないので修正する
         val saveDataList: MutableList<UserDataModel> = sharedPreferenceData as MutableList<UserDataModel>
         for (data in saveDataList) {
             var userDataModel = UserDataModel()
