@@ -4,16 +4,19 @@ import android.app.AlertDialog
 import android.app.Dialog
 import android.content.Context
 import android.content.SharedPreferences
-import android.content.res.Resources
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.example.bmiapp.Model.UserDataModel
 import com.example.bmiapp.R
+import com.squareup.moshi.JsonAdapter
+import com.squareup.moshi.Moshi
+import com.squareup.moshi.Types
 import kotlinx.android.synthetic.main.fragment_input.*
-import kotlinx.android.synthetic.main.list_item.*
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -23,9 +26,10 @@ import java.util.*
 
 class InputFragment : Fragment() {
 
-    private var dataList: MutableList<UserDataModel> = mutableListOf()
-    private var res: Resources? = null
     private var sharedPreferenceData: SharedPreferences? = null
+    val type = Types.newParameterizedType(List::class.java,UserDataModel::class.java)
+    val jsonAdapter: JsonAdapter<List<UserDataModel>> = Moshi.Builder().build().adapter(type)
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -33,7 +37,6 @@ class InputFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         sharedPreferenceData = context?.getSharedPreferences(context!!.packageName, Context.MODE_PRIVATE)
-        res = resources
         return inflater.inflate(R.layout.fragment_input, container, false)
     }
 
@@ -52,7 +55,11 @@ class InputFragment : Fragment() {
         // [保存する]ボタンアクション
         save_button.setOnClickListener {
             if (validateInputValue()) {
-                saveUserData()
+                if (text_bmi.text.toString().isEmpty()) {
+                    createAlert(R.string.error_require_calculation_before_save.toString()).show()
+                } else {
+                    saveUserData()
+                }
             }
         }
     }
@@ -77,32 +84,34 @@ class InputFragment : Fragment() {
 
     private fun saveUserData() {
         val dateArray = storeDateToArray()
-        var userDataModel = UserDataModel()
-        userDataModel.month = dateArray[1]
-        userDataModel.day = dateArray[2]
-        userDataModel.height = edit_height.text.toString()
-        userDataModel.weight = edit_weight.text.toString()
-        userDataModel.memo = edit_memo.text.toString()
+        val userData = UserDataModel(dateArray[1], dateArray[2], edit_height.text.toString(), edit_weight.text.toString(), text_bmi.text.toString(), edit_memo.text.toString())
+        val saveData = sharedPreferenceData?.getString("History", "[]")
+        val saveDataList : MutableList<UserDataModel>  = jsonAdapter.fromJson(saveData) as  MutableList<UserDataModel>
 
         if (isCurrentDayData()) {
             // 更新
+            // TODO: 修正する
         } else {
             // データ登録
+            saveDataList.add(userData)
+            val editor = sharedPreferenceData?.edit()
+            val json = jsonAdapter.toJson(saveDataList)
+            editor?.putString("History",json)
+            Toast.makeText(context, "BMIデータを保存しました", Toast.LENGTH_LONG).show()
         }
     }
 
     private fun createAlert(dialogMessage: String): Dialog {
         AlertDialog.Builder(activity).setTitle("")
-                                         .setMessage(dialogMessage)
-                                         .setPositiveButton("閉じる"){ _, _ ->
-                                         }
+                                     .setMessage(dialogMessage)
+                                     .setPositiveButton("閉じる"){ _, _ ->
+                                     }
         return AlertDialog.Builder(activity).create()
     }
 
     private fun validateInputValue(): Boolean {
         val strHeight = edit_height.text.toString()
         val strWeight = edit_weight.text.toString()
-        val strBmi = text_bmi.text.toString()
         if (strHeight.isEmpty() || strWeight.isEmpty()) {
             createAlert(R.string.error_empty_height_or_weight.toString()).show()
             return false
@@ -111,18 +120,19 @@ class InputFragment : Fragment() {
             createAlert(R.string.error_invalid_height_or_height.toString()).show()
             return false
         }
-        if (strBmi.isEmpty()) {
-            createAlert(R.string.error_require_calculation_before_save.toString()).show()
-            return false
-        }
         return true
     }
 
     private fun isCurrentDayData(): Boolean {
         val dateArray = storeDateToArray()
-        for (date in this.dataList) {
-            if (date.month == dateArray[1] || date.day == dateArray[2]) {
-                return false
+        val userData: MutableMap<String, *>? = sharedPreferenceData?.all
+        if (userData != null) {
+            for (data in userData) {
+                Log.d("", data.value as String)
+                // TODO: 修正
+                if (data.value == dateArray[1] || data.value == dateArray[2]) {
+                    return false
+                }
             }
         }
         return true
