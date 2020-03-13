@@ -5,7 +5,6 @@ import android.app.Dialog
 import android.content.Context
 import android.content.SharedPreferences
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -28,14 +27,10 @@ class InputFragment : Fragment() {
 
     private var sharedPreferenceData: SharedPreferences? = null
     val type = Types.newParameterizedType(List::class.java,UserDataModel::class.java)
-    val jsonAdapter: JsonAdapter<List<UserDataModel>> = Moshi.Builder().build().adapter(type)
+    private val jsonAdapter: JsonAdapter<List<UserDataModel>> = Moshi.Builder().build().adapter(type)
 
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         sharedPreferenceData = context?.getSharedPreferences(context!!.packageName, Context.MODE_PRIVATE)
         return inflater.inflate(R.layout.fragment_input, container, false)
     }
@@ -88,17 +83,17 @@ class InputFragment : Fragment() {
         val saveData = sharedPreferenceData?.getString("History", "[]")
         val saveDataList : MutableList<UserDataModel>  = jsonAdapter.fromJson(saveData) as  MutableList<UserDataModel>
 
-        if (isCurrentDayData()) {
+//        if (isCurrentDayData()) {
             // 更新
             // TODO: 修正する
-        } else {
+//        } else {
             // データ登録
             saveDataList.add(userData)
             val editor = sharedPreferenceData?.edit()
             val json = jsonAdapter.toJson(saveDataList)
             editor?.putString("History",json)
             Toast.makeText(context, "BMIデータを保存しました", Toast.LENGTH_LONG).show()
-        }
+//        }
     }
 
     private fun createAlert(dialogMessage: String): Dialog {
@@ -125,16 +120,16 @@ class InputFragment : Fragment() {
 
     private fun isCurrentDayData(): Boolean {
         val dateArray = storeDateToArray()
-        val userData: MutableMap<String, *>? = sharedPreferenceData?.all
-        if (userData != null) {
-            for (data in userData) {
-                Log.d("", data.value as String)
-                // TODO: 修正
-                if (data.value == dateArray[1] || data.value == dateArray[2]) {
-                    return false
-                }
-            }
-        }
+        val userData = sharedPreferenceData
+//        if (userData != null) {
+//            for (data in userData) {
+//                Log.d("", data.value as String)
+//                // TODO: 修正
+//                if (data.value == dateArray[1] || data.value == dateArray[2]) {
+//                    return false
+//                }
+//            }
+//        }
         return true
     }
 

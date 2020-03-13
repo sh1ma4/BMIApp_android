@@ -19,12 +19,12 @@
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <style name="ToolBarStyle" parent="Theme.AppCompat">
-        <item name="actionMenuTextColor">@color/color_white</item>
+        <item name="actionMenuTextColor">@color/color_black</item>
     </style>
 
     <style name="ToolbarTheme" parent="@style/ThemeOverlay.AppCompat.ActionBar">
         <!-- ToolBar Title色 -->
-        <item name="android:textColorPrimary">@color/color_white</item>
+        <item name="android:textColorPrimary">@color/color_black</item>
         <!-- iconの色 -->
         <item name="colorControlNormal"><![CDATA[@color/color_white]]></item>
     </style>

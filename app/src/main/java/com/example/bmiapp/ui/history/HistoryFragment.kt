@@ -12,6 +12,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.bmiapp.Model.UserDataModel
 import com.example.bmiapp.R
 import com.example.bmiapp.ui.history.RecycleView.ViewAdapter
+import com.squareup.moshi.JsonAdapter
+import com.squareup.moshi.Moshi
+import com.squareup.moshi.Types
 
 /**
  * 履歴画面
@@ -20,12 +23,10 @@ import com.example.bmiapp.ui.history.RecycleView.ViewAdapter
 class HistoryFragment : Fragment() {
 
     private var sharedPreferenceData: SharedPreferences? = null
+    val type = Types.newParameterizedType(List::class.java,UserDataModel::class.java)
+    private val jsonAdapter: JsonAdapter<List<UserDataModel>> = Moshi.Builder().build().adapter(type)
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         sharedPreferenceData = context?.getSharedPreferences(context!!.packageName, Context.MODE_PRIVATE)
         return inflater.inflate(R.layout.fragment_history, container, false)
     }
@@ -41,28 +42,7 @@ class HistoryFragment : Fragment() {
     }
 
     private fun getSaveData(): MutableList<UserDataModel> {
-        // TODO: sharedPrefはキャストできないので修正する
-        val saveDataList: MutableList<UserDataModel> = sharedPreferenceData as MutableList<UserDataModel>
-        for (data in saveDataList) {
-            var userDataModel = UserDataModel(
-                dateArray[1],
-                dateArray[2],
-                edit_height.text.toString(),
-                edit_weight.text.toString(),
-                text_bmi.text.toString(),
-                edit_memo.text.toString()
-            )
-            userDataModel.day = data.day
-            userDataModel.height = data.height
-            userDataModel.weight = data.weight
-            userDataModel.bmi = data.bmi
-            userDataModel.memo = data.memo
-            saveDataList.add(userDataModel)
-        }
-
-//        val saveData = sharedPreferenceData?.getString("History", "[]")
-//        val saveDataList: List<UserDataModel> = ViewAdapter.fromJson(saveData) as List<UserDataModel>
-
-        return saveDataList
+        val saveData = sharedPreferenceData?.getString("History", "[]")
+        return jsonAdapter.fromJson(saveData) as  MutableList<UserDataModel>
     }
 }
