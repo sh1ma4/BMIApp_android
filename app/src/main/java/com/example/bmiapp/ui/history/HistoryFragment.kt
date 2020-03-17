@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.bmiapp.Model.BmiModel
@@ -34,10 +35,10 @@ class HistoryFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val recyclerView: RecyclerView = view.findViewById(R.id.recyclerView)
-        recyclerView.apply {
+        recyclerView.apply{
             setHasFixedSize(true)
-            layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
-            adapter = ViewAdapter(getSaveData())
+            layoutManager = LinearLayoutManager(context)
+            adapter = ViewAdapter(getSaveData(), context)
         }
     }
 
@@ -47,7 +48,6 @@ class HistoryFragment : Fragment() {
         super.setUserVisibleHint(isVisibleToUser)
         if (!lastValue && isVisibleToUser) {
             adapter?.refresh(getSaveData())
-
         }
     }
 

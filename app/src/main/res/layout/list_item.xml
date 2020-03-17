@@ -1,112 +1,158 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:background="@color/color_white">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:paddingVertical="@dimen/activity_horizontal_margin"
-        tools:ignore="MissingConstraints">
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
 
         <TextView
-            android:id="@+id/date"
-            android:text="@string/history_day"
-            android:layout_width="wrap_content"
+            android:id="@+id/month"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="0.5"/>
+            android:background="@color/color_record_title"
+            android:paddingLeft="30dp"
+            android:textColor="@color/color_black"
+            android:textSize="14dp"
+            android:visibility="gone"></TextView>
+
+
+        <View
+            android:id="@+id/title_under_line"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/color_gray"
+            android:visibility="gone"></View>
 
         <LinearLayout
-            android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="0.5" >
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:layout_marginBottom="4dp"
+            android:layout_weight="10"
+            android:orientation="horizontal">
 
-            <LinearLayout
-                android:layout_width="wrap_content"
+            <TextView
+                android:id="@+id/date"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:layout_weight="1"
+                android:textAlignment="center"
+                android:textColor="@color/color_black"
+                android:textSize="18dp"
+                android:gravity="center_horizontal"/>
 
-                <LinearLayout
-                    android:orientation="horizontal"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="0.5">
+            <TextView
+                android:text="@string/history_day"
+                android:layout_width="wrap_content"
+                android:textColor="@color/color_black"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.5"/>
 
-                    <TextView
-                        android:text="@string/history_height"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="0.5"/>
+            <TextView
+                android:text="@string/history_height"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:textAlignment="center"
+                android:textColor="@color/color_black"
+                android:layout_weight="1.5"
+                android:textSize="14dp"
+                android:gravity="center_horizontal"/>
 
-                    <TextView
-                        android:id="@+id/height"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="0.5"/>
+            <TextView
+                android:id="@+id/height"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textAlignment="center"
+                android:textColor="@color/color_black"
+                android:textSize="14dp"
+                android:gravity="center_horizontal"/>
 
-                    <TextView
-                        android:text="@string/cm"
-                        android:layout_marginHorizontal="8dp"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="0.5"/>
+            <TextView
+                android:text="@string/cm"
+                android:layout_marginHorizontal="8dp"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:textAlignment="center"
+                android:textColor="@color/color_black"
+                android:layout_weight="1"
+                android:textSize="14dp"
+                android:gravity="center_horizontal"/>
 
-                </LinearLayout>
+            <TextView
+                android:text="@string/history_weight"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:textAlignment="center"
+                android:textColor="@color/color_black"
+                android:layout_weight="1.5"
+                android:textSize="14dp"
+                android:gravity="center_horizontal"/>
 
-                <LinearLayout
-                    android:orientation="horizontal"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent" android:layout_weight="0.5">
+            <TextView
+                android:id="@+id/weight"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textAlignment="center"
+                android:textColor="@color/color_black"
+                android:textSize="14dp"
+                android:gravity="center_horizontal"/>
 
-                    <TextView
-                        android:text="@string/history_weight"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="0.5"/>
+            <TextView
+                android:text="@string/kg"
+                android:layout_marginHorizontal="8dp"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:textAlignment="center"
+                android:textColor="@color/color_black"
+                android:layout_weight="1"
+                android:textSize="14dp"
+                android:gravity="center_horizontal"/>
 
-                    <TextView
-                        android:id="@+id/weight"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="0.5"/>
+            <TextView
+                android:text="@string/history_bmi"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:textAlignment="center"
+                android:textColor="@color/color_black"
+                android:layout_weight="1.5"
+                android:textSize="14dp"
+                android:gravity="center_horizontal"/>
 
-                    <TextView
-                        android:text="@string/kg"
-                        android:layout_marginHorizontal="8dp"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="0.5"/>
-                </LinearLayout>
+            <TextView
+                android:id="@+id/bmi"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textAlignment="center"
+                android:textColor="@color/color_black"
+                android:textSize="14dp"
+                android:gravity="center_horizontal"/>
 
-                <LinearLayout
-                    android:orientation="horizontal"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent" android:layout_weight="0.5">
-
-                    <TextView
-                        android:text="@string/history_bmi"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="0.5"/>
-
-                    <TextView
-                        android:id="@+id/bmi"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="0.5"/>
-                </LinearLayout>
-            </LinearLayout>
         </LinearLayout>
 
         <TextView
             android:id="@+id/memo"
-            android:text="date"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="0.5"/>
+            android:layout_marginLeft="26dp"
+            android:textColor="@color/color_gray"
+            android:textSize="14dp"
+            android:visibility="gone"/>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/color_gray"/>
     </LinearLayout>
 
-</android.support.constraint.ConstraintLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

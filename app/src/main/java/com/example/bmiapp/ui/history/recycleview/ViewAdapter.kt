@@ -1,5 +1,6 @@
 package com.example.bmiapp.ui.history.RecycleView
 
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -8,11 +9,10 @@ import com.example.bmiapp.Model.BmiModel
 import com.example.bmiapp.R
 import com.example.bmiapp.ui.history.recycleview.ViewHolder
 
-class ViewAdapter(private var list: MutableList<BmiModel>) : RecyclerView.Adapter<ViewHolder>() {
-
+class ViewAdapter(private var list: MutableList<BmiModel>, private val context: Context?) : RecyclerView.Adapter<ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val rowView: View = LayoutInflater.from(parent.context).inflate(R.layout.list_item, parent, false)
+        val rowView: View = LayoutInflater.from(context).inflate(R.layout.list_item, parent, false)
         return ViewHolder(rowView)
     }
 
@@ -30,7 +30,7 @@ class ViewAdapter(private var list: MutableList<BmiModel>) : RecyclerView.Adapte
         return list.size
     }
 
-    fun refresh(newList: List<BmiModel>) {
+    fun refresh(newList: MutableList<BmiModel>) {
         list.clear()
         list.addAll(newList)
         notifyDataSetChanged()

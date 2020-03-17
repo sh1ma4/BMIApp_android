@@ -84,16 +84,18 @@ class InputFragment : Fragment() {
         val saveDataList : MutableList<BmiModel>  = jsonAdapter.fromJson(saveData) as  MutableList<BmiModel>
 
         // データ登録
-//        if (isCurrentDayData()) {
+        if (isCurrentDayData()) {
             saveDataList.add(userData)
-            val editor = sharedPreferenceData.edit()
-            editor.apply {
-                val json = jsonAdapter.toJson(saveDataList)
-                editor.putString("History",json)
-                Toast.makeText(context, "BMIデータを保存しました", Toast.LENGTH_SHORT).show()
-                editor.apply()
-            }
-//        }
+        } else {
+            saveDataList[saveDataList.size-1] = userData
+        }
+        val editor = sharedPreferenceData.edit()
+        editor.apply {
+            val json = jsonAdapter.toJson(saveDataList)
+            editor.putString("History",json)
+            Toast.makeText(context, "BMIデータを保存しました", Toast.LENGTH_SHORT).show()
+            editor.apply()
+        }
     }
 
     private fun showAlert (message: String) {
