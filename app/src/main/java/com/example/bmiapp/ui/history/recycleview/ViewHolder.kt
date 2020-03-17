@@ -1,4 +1,4 @@
-package com.example.bmiapp.ui.history.RecycleView
+package com.example.bmiapp.ui.history.recycleview
 
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView

@@ -4,10 +4,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.example.bmiapp.Model.UserDataModel
+import com.example.bmiapp.Model.BmiModel
 import com.example.bmiapp.R
+import com.example.bmiapp.ui.history.recycleview.ViewHolder
 
-class ViewAdapter(private var list: MutableList<UserDataModel>) : RecyclerView.Adapter<ViewHolder>() {
+class ViewAdapter(private var list: MutableList<BmiModel>) : RecyclerView.Adapter<ViewHolder>() {
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -16,10 +17,10 @@ class ViewAdapter(private var list: MutableList<UserDataModel>) : RecyclerView.A
     }
 
     override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
-        viewHolder.dateView?.text  = list[position].day
-        viewHolder.heightView?.text = list[position].height
-        viewHolder.weightView?.text = list[position].weight
-        viewHolder.bmiView?.text = list[position].bmi
+        viewHolder.dateView.text  = list[position].day
+        viewHolder.heightView.text = list[position].height
+        viewHolder.weightView.text = list[position].weight
+        viewHolder.bmiView.text = list[position].bmi
         viewHolder.memoView.text = list[position].memo
 
         viewHolder.memoView.visibility = if (viewHolder.memoView.text.isEmpty()) View.GONE else View.VISIBLE
@@ -27,5 +28,11 @@ class ViewAdapter(private var list: MutableList<UserDataModel>) : RecyclerView.A
 
     override fun getItemCount(): Int {
         return list.size
+    }
+
+    fun refresh(newList: List<BmiModel>) {
+        list.clear()
+        list.addAll(newList)
+        notifyDataSetChanged()
     }
 }

@@ -10,7 +10,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import com.example.bmiapp.Model.UserDataModel
+import com.example.bmiapp.Model.BmiModel
 import com.example.bmiapp.R
 import com.squareup.moshi.JsonAdapter
 import com.squareup.moshi.Moshi
@@ -25,13 +25,12 @@ import java.util.*
 
 class InputFragment : Fragment() {
 
-    private var sharedPreferenceData: SharedPreferences? = null
-    val type = Types.newParameterizedType(List::class.java,UserDataModel::class.java)
-    private val jsonAdapter: JsonAdapter<List<UserDataModel>> = Moshi.Builder().build().adapter(type)
+    private val type = Types.newParameterizedType(List::class.java,BmiModel::class.java)
+    private val jsonAdapter: JsonAdapter<List<BmiModel>> = Moshi.Builder().build().adapter(type)
 
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        sharedPreferenceData = context?.getSharedPreferences(context!!.packageName, Context.MODE_PRIVATE)
+        super.onCreateView(inflater, container, savedInstanceState)
         return inflater.inflate(R.layout.fragment_input, container, false)
     }
 
@@ -51,7 +50,7 @@ class InputFragment : Fragment() {
         save_button.setOnClickListener {
             if (validateInputValue()) {
                 if (text_bmi.text.toString().isEmpty()) {
-                    createAlert(R.string.error_require_calculation_before_save.toString()).show()
+                    showAlert(resources.getString(R.string.error_require_calculation_before_save))
                 } else {
                     saveUserData()
                 }
@@ -73,46 +72,46 @@ class InputFragment : Fragment() {
     }
 
     private fun storeDateToArray(): List<String> {
-        val strDate = SimpleDateFormat("yyyy-MM-dd").format(Date())
+        val strDate = SimpleDateFormat("yyyy-MM-dd",Locale.JAPAN).format(Date())
        return strDate.split("-".toRegex())
     }
 
     private fun saveUserData() {
+        val sharedPreferenceData = context!!.getSharedPreferences(context!!.packageName, Context.MODE_PRIVATE)
         val dateArray = storeDateToArray()
-        val userData = UserDataModel(dateArray[1], dateArray[2], edit_height.text.toString(), edit_weight.text.toString(), text_bmi.text.toString(), edit_memo.text.toString())
-        val saveData = sharedPreferenceData?.getString("History", "[]")
-        val saveDataList : MutableList<UserDataModel>  = jsonAdapter.fromJson(saveData) as  MutableList<UserDataModel>
+        val userData = BmiModel(dateArray[1], dateArray[2], edit_height.text.toString(), edit_weight.text.toString(), text_bmi.text.toString(), edit_memo.text.toString())
+        val saveData = sharedPreferenceData.getString("History", "[]")
+        val saveDataList : MutableList<BmiModel>  = jsonAdapter.fromJson(saveData) as  MutableList<BmiModel>
 
+        // データ登録
 //        if (isCurrentDayData()) {
-            // 更新
-            // TODO: 修正する
-//        } else {
-            // データ登録
             saveDataList.add(userData)
-            val editor = sharedPreferenceData?.edit()
-            val json = jsonAdapter.toJson(saveDataList)
-            editor?.putString("History",json)
-            Toast.makeText(context, "BMIデータを保存しました", Toast.LENGTH_LONG).show()
+            val editor = sharedPreferenceData.edit()
+            editor.apply {
+                val json = jsonAdapter.toJson(saveDataList)
+                editor.putString("History",json)
+                Toast.makeText(context, "BMIデータを保存しました", Toast.LENGTH_SHORT).show()
+                editor.apply()
+            }
 //        }
     }
 
-    private fun createAlert(dialogMessage: String): Dialog {
-        AlertDialog.Builder(activity).setTitle("")
-                                     .setMessage(dialogMessage)
-                                     .setPositiveButton("閉じる"){ _, _ ->
-                                     }
-        return AlertDialog.Builder(activity).create()
+    private fun showAlert (message: String) {
+        val builder = android.app.AlertDialog.Builder(activity)
+        builder.setTitle("")
+            .setMessage(message)
+            .create().show()
     }
 
     private fun validateInputValue(): Boolean {
         val strHeight = edit_height.text.toString()
         val strWeight = edit_weight.text.toString()
         if (strHeight.isEmpty() || strWeight.isEmpty()) {
-            createAlert(R.string.error_empty_height_or_weight.toString()).show()
+            showAlert(resources.getString(R.string.error_empty_height_or_weight))
             return false
         }
         if (formatFirstDecimal(strHeight).toFloat() / 100 > 3.0 || formatFirstDecimal(strWeight).toFloat() > 300.0) {
-            createAlert(R.string.error_invalid_height_or_height.toString()).show()
+            showAlert(resources.getString(R.string.error_invalid_height_or_height))
             return false
         }
         return true
@@ -120,16 +119,16 @@ class InputFragment : Fragment() {
 
     private fun isCurrentDayData(): Boolean {
         val dateArray = storeDateToArray()
-        val userData = sharedPreferenceData
-//        if (userData != null) {
-//            for (data in userData) {
-//                Log.d("", data.value as String)
-//                // TODO: 修正
-//                if (data.value == dateArray[1] || data.value == dateArray[2]) {
-//                    return false
-//                }
-//            }
-//        }
+        val sharedPreferenceData = context!!.getSharedPreferences(context!!.packageName, Context.MODE_PRIVATE)
+        val saveData = sharedPreferenceData.getString("History", "[]")
+        val savedData = jsonAdapter.fromJson(saveData) as MutableList<BmiModel>
+        if (savedData.size > 0) {
+            for (data in savedData) {
+                if (data.month == dateArray[1] || data.day == dateArray[2]) {
+                    return false
+                }
+            }
+        }
         return true
     }
 
